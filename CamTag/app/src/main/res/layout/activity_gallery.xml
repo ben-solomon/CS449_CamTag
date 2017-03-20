@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="theappsnamegoeshere.apptest.testapp.camtag.GalleryActivity"
+    tools:layout_editor_absoluteY="25dp"
+    tools:layout_editor_absoluteX="0dp"
+    android:background="@color/colorPrimary">
+
+
+    <ToggleButton
+        android:id="@+id/toggleButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="ToggleButton"
+        android:textOff="Contains"
+        android:textOn="Exact"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginRight="17dp"
+        android:layout_marginEnd="17dp"
+        android:layout_alignParentTop="true" />
+
+    <GridView
+        android:id="@+id/galleryTagsGrid"
+        android:layout_width="wrap_content"
+        android:layout_height="100dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+
+        android:layout_below="@+id/toggleButton"
+        android:columnWidth="90dp"
+        android:gravity="center"
+        android:horizontalSpacing="3dp"
+        android:listSelector="@drawable/bgv"
+        android:numColumns="auto_fit"
+        android:paddingBottom="10dp"
+        android:stretchMode="columnWidth"
+        android:verticalSpacing="3dp"
+        tools:layout_editor_absoluteX="10dp"
+        tools:layout_editor_absoluteY="46dp" />
+
+    <GridView
+        android:id="@+id/galleryGrid"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/galleryTagsGrid"
+        android:layout_centerHorizontal="true"
+        android:background="@android:drawable/screen_background_dark_transparent"
+        android:columnWidth="90dp"
+        android:listSelector="@drawable/bgv"
+        android:gravity="center"
+        android:horizontalSpacing="10dp"
+        android:numColumns="auto_fit"
+        android:stretchMode="columnWidth"
+        android:verticalSpacing="10dp"
+        tools:layout_editor_absoluteX="8dp"
+        tools:layout_editor_absoluteY="140dp" />
+
+    <EditText
+        android:id="@+id/filter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/toggleButton"
+        android:layout_alignBottom="@+id/toggleButton"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginLeft="14dp"
+        android:layout_marginStart="14dp"
+        android:background="@android:drawable/title_bar"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:paddingBottom="10dp"
+        android:paddingTop="3dp"
+        android:textAppearance="@style/TextAppearance.AppCompat.Light.SearchResult.Subtitle" />
+
+</RelativeLayout>

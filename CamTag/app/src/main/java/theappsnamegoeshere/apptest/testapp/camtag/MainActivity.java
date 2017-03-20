@@ -45,11 +45,11 @@ public class MainActivity extends AppCompatActivity {
 
     //holds items to be displayed in grid and list views
     List<String> visibleTags;
-    List<String> selectedtags;
+    List<String> selectedTags;
     String temps;
     ArrayAdapter<String> selectedListAdapter; //selected tags
     ArrayAdapter<String> visibleTagsAdapter;
-    ImageTags lasttaken = new ImageTags();
+    ImageTags lastTaken = new ImageTags();
     // database handler
     DBhandler db;
     SQLiteDatabase database;
@@ -60,10 +60,10 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        setContentView(R.layout.activity_main);
 
-        lasttaken.clearall();
 
+        lastTaken.clearall();
+        dispatchTakePictureIntent();
         TextView lbl = (TextView) findViewById(R.id.selectedLabel);
         lbl.setVisibility(View.INVISIBLE);
 
@@ -73,12 +73,13 @@ public class MainActivity extends AppCompatActivity {
         // instantiate database handler
         db = new DBhandler(this);
         database = db.getWritableDatabase();
-        db.addLink("test","test123");
+        //Toast.makeText(this,Integer.toString(db.getImageList().size()),Toast.LENGTH_LONG).show();
+        //Toast.makeText(this,db.getImageList().get(0),Toast.LENGTH_LONG).show();
 //---------------------------------------------------
         // initial populating of selected tags - empty at first and handled dynamically based on user input
         lv = (ListView) findViewById(R.id.selectedList);
-        selectedtags = new ArrayList<String>();
-        selectedListAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, selectedtags);
+        selectedTags = new ArrayList<String>();
+        selectedListAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, selectedTags);
         lv.setAdapter(selectedListAdapter);
 //-------------------------------------------------
         // set gridview to allow long click for delete tag function
@@ -129,13 +130,13 @@ public class MainActivity extends AppCompatActivity {
                 TextView v = (TextView) view;
                 String a = v.getText().toString();
                 // when an item is tapped in the listview (selected tags) it is removed and placed back into the gridview pool of tags
-                selectedtags.remove(a);
-                selectedListAdapter =  new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_1, selectedtags);
+                selectedTags.remove(a);
+                selectedListAdapter =  new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_1, selectedTags);
                 lv.setAdapter(selectedListAdapter);
                 // adding the tag back to the displayed gridiew
                 visibleTags.clear();
                 visibleTags.addAll(db.getTagsList());
-                for (String j : selectedtags){
+                for (String j : selectedTags){
                     visibleTags.remove(j);
                 }
                 visibleTagsAdapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_1, visibleTags);
@@ -154,13 +155,13 @@ public class MainActivity extends AppCompatActivity {
 
                 String a = v.getText().toString();
                 // if already selected shows message "already selected!"
-                if(lasttaken.getimagename() == "nullfname"){
+                if(lastTaken.getimagename() == "nullfname"){
                     return;}
-                if (!selectedtags.contains(a))
+                if (!selectedTags.contains(a))
                 {
                     // else, we add the tag to the selected listview
-                    selectedtags.add(a);
-                    selectedListAdapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_1, selectedtags);
+                    selectedTags.add(a);
+                    selectedListAdapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_1, selectedTags);
                     lv.setAdapter(selectedListAdapter);
                     // and remove it from the choice of tags in the gridview
                     visibleTags.remove(a);
@@ -198,22 +199,30 @@ public class MainActivity extends AppCompatActivity {
 
     // when a picture is take, a random filename is created
     public void dispatchTakePictureIntent() {
+        File folder = new File(Environment.getExternalStorageDirectory().toString()+"/CamTag");
+        if (!folder.exists())
+        {
+            folder.mkdirs();
+        }
+        String rn1,rn2,rn3;
         Random fn1 = new Random();
-        int n = 10000;
-        int n2 = 10000;
-        int n3 = 2000;
+        int n = 1000;
+        int n2 = 1000;
+        int n3 = 1000;
         n = fn1.nextInt(n);
+        rn1 = Integer.toString(n);
         n2 = fn1.nextInt(n2);
-        fn1.nextInt();
+        rn2 = Integer.toString(n2);
         n3 = fn1.nextInt(n3);
-        String fname = "Img-" + n + n3 + n2;
+        rn3 = Integer.toString(n3);
+        String fname = "Img-" + rn1+rn2+rn3;
         // set global Image/Tag container object to the current filename (used to create DB links)
-        lasttaken.setImage(fname);
+        lastTaken.setImage(fname);
         // image file
-        File pic = new File(Environment.getExternalStorageDirectory().toString() + "/CamTaG");
+        File pic = new File(Environment.getExternalStorageDirectory().toString() + "/CamTag");
 
         try {
-            pic = this.createTemporaryFile(fname, ".jpg");
+            pic = new File(Environment.getExternalStorageDirectory().toString() + "/CamTag", fname+".jpg");
             pic.delete();
 
         } catch (Exception e) {
@@ -238,16 +247,17 @@ public class MainActivity extends AppCompatActivity {
     // makes save button invisible again until new photo is captured
     public void saved(View v){
 
-        lasttaken.setList(selectedtags);
-        db.addLinks(lasttaken);
-        lasttaken.clearall();
+        lastTaken.setList(selectedTags);
+        db.addLinks(lastTaken);
+        lastTaken.clearall();
 
 
         ImageView vw = (ImageView) findViewById(R.id.picMain);
+        vw.setRotation(-90);
+        vw.setImageResource(R.drawable.preview1);
 
-
-        selectedtags.clear();
-        selectedListAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1,selectedtags);
+        selectedTags.clear();
+        selectedListAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1,selectedTags);
         lv.setAdapter(selectedListAdapter);
 
         visibleTags.clear();
@@ -283,7 +293,7 @@ public class MainActivity extends AppCompatActivity {
 
                 if (resultCode == RESULT_OK) {
                     // if capture returns no errors, same code as above (set image preview), just a 2nd place to catch this event
-                    db.addImage(lasttaken.getimagename());
+                    db.addImage(lastTaken.getimagename());
                     ImageView v = (ImageView) findViewById(R.id.picMain);
                     v.setImageURI(picuri);
 
@@ -310,6 +320,9 @@ public class MainActivity extends AppCompatActivity {
                     ImageButton bt = (ImageButton) findViewById(R.id.saveButton);
                     bt.setVisibility(View.VISIBLE);
                 }
+                else{
+
+                }
                 break;
 
         }
@@ -318,9 +331,11 @@ public class MainActivity extends AppCompatActivity {
     public void deleteTags(View v)
     {
         db.clearTable("Tags");
+        db.clearTable("Images");
+        db.clearTable("Links");
     }
     // Adding a tag
-    public void taginsert(View v){
+    public void tagInsert(View v){
         EditText t = (EditText) findViewById(R.id.addtagbox);
         String str = t.getText().toString();
         // get text from text box
@@ -340,7 +355,7 @@ public class MainActivity extends AppCompatActivity {
             // we check populate the gridview with all tags from the DB (after insert) and remove
             // anything already being displayed in the selected tags listview
             List<String> x = db.getTagsList();
-            for (String j: selectedtags){
+            for (String j: selectedTags){
                 x.remove(j);
             }
 
@@ -368,6 +383,11 @@ public class MainActivity extends AppCompatActivity {
     protected void vid(View v) {
         dispatchTakeVideoIntent();
 
+    }
+    public void toGallery(View v){
+
+        Intent myIntent = new Intent(MainActivity.this,GalleryActivity.class);
+        MainActivity.this.startActivity(myIntent);
     }
 
 }

@@ -171,7 +171,19 @@ public class DBhandler extends SQLiteOpenHelper {
         }
         return tl;
     }
-
+public List<String> getImageList(){
+    SQLiteDatabase db = this.getReadableDatabase();
+    String select = "SELECT "+ IMAGE_FILENAME + " FROM "+ IMAGE_TABLE;
+    Cursor c = db.rawQuery(select, null);
+    List<String> tl = new ArrayList<String>();
+    if(c.moveToFirst())
+    {
+        do{
+            tl.add(c.getString(0));
+        }while (c.moveToNext());
+    }
+    return tl;
+}
 
     public void deleteTag(String s){
         SQLiteDatabase db = this.getWritableDatabase();

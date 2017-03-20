@@ -100,12 +100,13 @@
 
 
             <ImageButton
+                android:id="@+id/tagButton"
                 android:layout_width="60dp"
                 android:layout_height="48dp"
-                app:srcCompat="@drawable/tags"
-                android:id="@+id/tagButton"
-                android:scaleType="fitCenter"
-                android:visibility="visible" />
+                android:onClick="toGallery"
+                android:scaleType="centerCrop"
+                android:visibility="visible"
+                app:srcCompat="@drawable/gallery2" />
 
             <LinearLayout
                 android:orientation="vertical"
@@ -152,7 +153,7 @@
                     android:layout_marginTop="5dip"
                     android:layout_gravity="center_horizontal"
                     android:textColor="@color/colorAccent"
-                    android:onClick="taginsert" />
+                    android:onClick="tagInsert" />
             </LinearLayout>
 
             <ImageButton
