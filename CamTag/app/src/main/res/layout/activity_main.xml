@@ -77,19 +77,19 @@
         </LinearLayout>
 
         <GridView
-            android:verticalScrollbarPosition="right"
-            android:scrollingCache="true"
-            android:layout_height="149dp"
             android:id="@+id/gvTag"
             android:layout_width="match_parent"
+            android:layout_height="149dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="20dp"
+
+            android:background="@android:drawable/screen_background_dark_transparent"
             android:columnWidth="90dp"
             android:numColumns="auto_fit"
-
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="10dp"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true"
-            android:background="@android:drawable/screen_background_dark_transparent" />
+            android:scrollingCache="true"
+            android:verticalScrollbarPosition="right" />
 
         <LinearLayout
             android:orientation="horizontal"
