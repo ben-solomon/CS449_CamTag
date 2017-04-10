@@ -4,16 +4,20 @@ package theappsnamegoeshere.apptest.testapp.camtag;
  * Created by Ben on 2/20/2017.
  */
 
+import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.widget.Toast;
+import android.widget.ToggleButton;
+
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class DBhandler extends SQLiteOpenHelper {
+public class DBhandler extends SQLiteOpenHelper{
     private static final int database_version = 1;
     private static final String database_name = "CamTag.db";
 
@@ -130,6 +134,7 @@ public class DBhandler extends SQLiteOpenHelper {
         }
 
     }
+
     public boolean containsTag(String tagname){
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor c = db.rawQuery("SELECT * FROM Tags WHERE TAG_NAME = '" + tagname.trim() +"'",null);
@@ -171,7 +176,94 @@ public class DBhandler extends SQLiteOpenHelper {
         }
         return tl;
     }
+    public List<String> getCustomTagsList(String typed){
+        SQLiteDatabase db = this.getReadableDatabase();
+        String select;
+        if (typed.contains(" "))
+        {
+            select = "SELECT "+ TAG_NAME + " FROM "+ TAG_TABLE+" WHERE "+TAG_NAME+ " LIKE '"+typed+"%'";
+        }
+        else
+        {
+            select = "SELECT "+ TAG_NAME + " FROM "+ TAG_TABLE+" WHERE "+TAG_NAME+ " LIKE '%"+typed+"%'";
+        }
 
+        Cursor c = db.rawQuery(select, null);
+        List<String> tl = new ArrayList<String>();
+        if(c.moveToFirst())
+        {
+            do{
+                tl.add(c.getString(0));
+            }while (c.moveToNext());
+        }
+        return tl;
+    }
+    public List<String> getContainsImageList(List<String> ls) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String select;
+        if (ls.isEmpty()) {
+            return new ArrayList<String>();
+        } else if (ls.size() == 1) {
+            select = "SELECT " + IMAGE_TABLE + "." + IMAGE_FILENAME + " FROM " +
+                    IMAGE_TABLE + " JOIN " + LINK_TABLE + " ON " + LINK_TABLE + "." + IMAGE_ID + " = " + IMAGE_TABLE + "." + IMAGE_ID +
+                    " JOIN " + TAG_TABLE + " ON " + TAG_TABLE + "." + TAG_ID + " = " + LINK_TABLE + "." + TAG_ID + " WHERE " + TAG_TABLE + "." + TAG_NAME + " IN ('" + ls.get(0) + "') " +
+                    "GROUP BY " + IMAGE_TABLE + "." + IMAGE_ID;
+
+            try {
+                Cursor c = db.rawQuery(select, null);
+                List<String> tl = new ArrayList<String>();
+                if (c.moveToFirst()) {
+                    do {
+                        tl.add(c.getString(0));
+                    } while (c.moveToNext());
+                }
+                return tl;
+            } catch (Exception e) {
+                return new ArrayList<String>();
+            }
+        }
+        else{
+            select = "SELECT " + IMAGE_TABLE + "." + IMAGE_FILENAME + " FROM " +
+                    IMAGE_TABLE + " JOIN " + LINK_TABLE + " ON " + LINK_TABLE + "." + IMAGE_ID + " = " + IMAGE_TABLE + "." + IMAGE_ID +
+                    " JOIN " + TAG_TABLE + " ON " + TAG_TABLE + "." + TAG_ID + " = " + LINK_TABLE + "." + TAG_ID + " WHERE " + TAG_TABLE + "." + TAG_NAME + " IN (";
+            for (String j : ls)
+            {
+                select += "'"+j+"'";
+                if (ls.get(ls.size()-1) != j){
+                    select +=",";
+                }
+            }
+            String add = ") " +
+                    "GROUP BY " + IMAGE_TABLE + "." + IMAGE_ID+" HAVING COUNT(DISTINCT "+TAG_TABLE+"."+TAG_NAME+") >=" + Integer.toString(ls.size());
+            select += add;
+
+            try {
+                Cursor c = db.rawQuery(select, null);
+                List<String> tl = new ArrayList<String>();
+                if (c.moveToFirst()) {
+                    do {
+                        tl.add(c.getString(0));
+                    } while (c.moveToNext());
+                }
+                return tl;
+            } catch (Exception e) {
+                return new ArrayList<String>();
+            }
+        }
+    }
+public List<String> getImageList(){
+    SQLiteDatabase db = this.getReadableDatabase();
+    String select = "SELECT "+ IMAGE_FILENAME + " FROM "+ IMAGE_TABLE;
+    Cursor c = db.rawQuery(select, null);
+    List<String> tl = new ArrayList<String>();
+    if(c.moveToFirst())
+    {
+        do{
+            tl.add(c.getString(0));
+        }while (c.moveToNext());
+    }
+    return tl;
+}
 
     public void deleteTag(String s){
         SQLiteDatabase db = this.getWritableDatabase();
