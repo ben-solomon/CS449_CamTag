@@ -4,9 +4,9 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
 import android.os.Environment;
 import android.os.Bundle;
-import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -19,6 +19,7 @@ import android.widget.BaseAdapter;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.GridView;
+import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -27,21 +28,21 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import static android.widget.Toast.LENGTH_SHORT;
+
 public class GalleryActivity extends Activity{
     SQLiteDatabase databasex;
     final DBhandler dbx = new DBhandler(this);
     List<String> shownImages;
+    ArrayList<String>selectedImages=new ArrayList();
     List<String> selectedTags = new ArrayList<String>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gallery);
-        //Toast.makeText(this,myapp.getName(),Toast.LENGTH_SHORT);
         databasex = dbx.getReadableDatabase();
         // tags to filter gallery by
         shownImages = dbx.getImageList();
-        //ArrayAdapter<String> tagsAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, tags);
-
         // gridview for gallery images
         final GridView galleryGV = (GridView) findViewById(R.id.galleryGrid);
         shownImages = dbx.getImageList();
@@ -50,82 +51,124 @@ public class GalleryActivity extends Activity{
         final GridView tagGV = (GridView) findViewById(R.id.galleryTagsGrid);
         EditText text = (EditText)findViewById(R.id.filterSearch);
         final FloatingActionButton fa = (FloatingActionButton) findViewById(R.id.searchButton);
-        text.setVisibility(View.VISIBLE);
+        final FloatingActionButton settings = (FloatingActionButton) findViewById(R.id.settingsButton);
+        settings.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(getApplicationContext(),"settings menu under construction!", Toast.LENGTH_SHORT).show();
+            }
+        });
+        FloatingActionButton shareMulti = (FloatingActionButton) findViewById(R.id.shareMultiButton);
+        shareMulti.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent email = new Intent(Intent.ACTION_SEND_MULTIPLE);
+                email.setType("image/gif");
+                email.putExtra(Intent.EXTRA_EMAIL, new String[]{"to@example.com"});
+                email.putExtra(Intent.EXTRA_SUBJECT, "");
+                email.putExtra(Intent.EXTRA_TEXT,"Sent From CamTag");
+                ArrayList<Uri> paths = new ArrayList<Uri>();
+                for (String file : selectedImages)
+                {
+                    File temp = new File(Environment.getExternalStorageDirectory().toString()+"/CamTag/" + file);
+                    Uri u = Uri.fromFile(temp);
+                    paths.add(u);
+                }
+                email.putParcelableArrayListExtra(Intent.EXTRA_STREAM, paths);
+                startActivity(email);
+            }
+        });
+        text.setVisibility(View.GONE);
         text.bringToFront();
         text.setHint("search tags...");
         // custom grid adapter to show imageviews in gridview
         final CustomGrid cgAdapter = new CustomGrid(this, shownImages);
         galleryGV.setAdapter(cgAdapter);
         final CustomGridTags cgAdapterTags = new CustomGridTags(this,dbx.getTagsList());
-        tagGV.setVisibility(View.VISIBLE);
+        tagGV.setVisibility(View.GONE);
         tagGV.setAdapter(cgAdapterTags);
         tagGV.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                //Toast.makeText(view.getContext(),"clicked",Toast.LENGTH_SHORT).show();
                 TextView tv = (TextView) view.findViewById(R.id.textViewtags);
                 CheckBox cb = (CheckBox) view.findViewById(R.id.checkBoxtags);
-                Toast.makeText(view.getContext(),tv.getText().toString(),Toast.LENGTH_SHORT).show();
+                Toast.makeText(view.getContext(),tv.getText().toString(), LENGTH_SHORT).show();
                if (cb.isChecked()){
-                    //Toast.makeText(view.getContext(),"incheck",Toast.LENGTH_LONG).show();
                     cb.setChecked(false);
                     try{selectedTags.remove(tv.getText().toString());}
                     catch (Exception e){
                         Toast.makeText(view.getContext(),"tag does not exists",Toast.LENGTH_LONG).show();
                     }
-
                 }else
                 {
-                   // Toast.makeText(view.getContext(),"incheck",Toast.LENGTH_LONG).show();
                     cb.setChecked(true);
                     selectedTags.add(tv.getText().toString());
                 }
                 shownImages = dbx.getContainsImageList(selectedTags);
-                for (String j:shownImages){
-                    Toast.makeText(view.getContext(),j,Toast.LENGTH_SHORT).show();
-                }
                 cgAdapter.fillList(shownImages);
                 galleryGV.setAdapter(cgAdapter);
-                cgAdapter.notifyDataSetChanged();
-
-
             }
-
         });
-
-
-        // search is hidden until search button is pressed-- gallery starts out fullscreen
-       // tagGV.setVisibility(View.GONE);
-
         galleryGV.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
             @Override
             // working on getting the image index passed to fullscreen activity
          public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 
         Intent fullScreen = new Intent(GalleryActivity.this, FullScreenActivity.class);
                 String fname = view.getTag(R.id.gvitem).toString();
-                if (fname != null)
-                {
-                    Toast.makeText(view.getContext(),view.getTag(R.id.gvitem).toString(), Toast.LENGTH_SHORT).show();
-                }
-
-                try {
-                   fullScreen.putExtra("curimage",fname);
-                    ArrayList<String> temp = new ArrayList<String> ();
-                    for (String j:shownImages)
+                if(!selectedImages.isEmpty()){
+                    if (selectedImages.contains(fname)){
+                        selectedImages.remove(fname);
+                        view.setBackgroundResource(android.R.color.transparent);
+                        if(selectedImages.isEmpty()){
+                            HorizontalScrollView hz = (HorizontalScrollView) findViewById(R.id.bottomShareBar);
+                            hz.setVisibility(View.GONE);
+                        };
+                    }else
                     {
-                        temp.add(j);
+                        view.setBackgroundResource(R.color.colorAccent);
+                        selectedImages.add(fname);
                     }
-                   fullScreen.putStringArrayListExtra("curgallery",temp);
-                    startActivity(fullScreen);
-                }catch (Exception e){
-                    Log.i("msg",e.getMessage());
-                    Log.i("fail","FAIL ******** FAIL ************* FAIL *************");
-                    Toast.makeText(view.getContext(), "fullscreen error", Toast.LENGTH_SHORT).show();
+                }
+                else{
+                    try {
+                        fullScreen.putExtra("curimage",fname);
+                        ArrayList<String> temp = new ArrayList<String> ();
+                        for (String j:shownImages)
+                        {
+                            temp.add(j);
+                        }
+                        fullScreen.putStringArrayListExtra("curgallery",temp);
+                        startActivity(fullScreen);
+                    }catch (Exception e){
+                        Log.i("msg",e.getMessage());
+                        Log.i("fail","FAIL ******** EPIC ************* FAIL *************");
+                        Toast.makeText(view.getContext(), "fullscreen error", LENGTH_SHORT).show();
+                    }
+                }
+        }
+        });
+        galleryGV.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+                String fname = view.getTag(R.id.gvitem).toString();
+                if(selectedImages.isEmpty()){
+                    HorizontalScrollView hz = (HorizontalScrollView) findViewById(R.id.bottomShareBar);
+                    hz.setVisibility(View.VISIBLE);
+                    Toast.makeText(getApplicationContext(),"Tap to highlight",Toast.LENGTH_LONG).show();
+                }
+                if (selectedImages.contains(fname)){
+                    selectedImages.remove(fname);
+                    view.setBackgroundResource(android.R.color.transparent);
+
+                }else
+                {
+                    view.setBackgroundResource(R.color.colorAccent);
+                    selectedImages.add(fname);
                 }
 
-        }
+                return true;
+            }
         });
         // filters tags as you type in the tag search
         TextWatcher inputTextWatcher = new TextWatcher() {
@@ -134,8 +177,6 @@ public class GalleryActivity extends Activity{
             public void beforeTextChanged(CharSequence s, int start, int count, int after){
             }
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-               cgAdapterTags.fillList(dbx.getCustomTagsList(s.toString()));
-                tagGV.setAdapter(cgAdapterTags);
             }
         };
 
@@ -151,6 +192,7 @@ public class GalleryActivity extends Activity{
 
         if (tagGV.isShown())
         {
+            selectedTags.clear();
             shownImages = dbx.getImageList();
             galGV.setAdapter(new CustomGrid(this,shownImages));
             tagGV.setVisibility(View.GONE);
@@ -160,8 +202,9 @@ public class GalleryActivity extends Activity{
         else
         {
             shownImages.clear();
+            tagGV.setAdapter(new CustomGridTags(this,dbx.getTagsList()));
             tagGV.setVisibility(View.VISIBLE);
-            et.setVisibility(View.VISIBLE);
+            et.setVisibility(View.INVISIBLE);
             fl.setImageResource(android.R.drawable.arrow_up_float);
         }
     }
@@ -196,7 +239,6 @@ public class GalleryActivity extends Activity{
         public CustomGridTags(Context c){
             this.mContext = c;
             this.tagsList = null;
-
         }
         public CustomGridTags(Context c, List<String> ls){
             this.mContext = c;
@@ -255,7 +297,6 @@ public class GalleryActivity extends Activity{
                 this.galleryList.add(j);
             }
         }
-
         public CustomGrid(Context c) {
             this.mContext = c;
             this.galleryList = null;
@@ -301,7 +342,7 @@ public class GalleryActivity extends Activity{
                 }
                 // load image into imageview
                 Picasso.with(getApplicationContext())
-                        .load(temp).placeholder(R.drawable.load).centerCrop().resize(150,150).into(holder2.iv);
+                        .load(temp).placeholder(R.drawable.load).centerCrop().resize(120,120).into(holder2.iv);
            view.setTag(R.id.gvitem,galleryList.get(i));
             return view;
         }

@@ -76,6 +76,12 @@
                 android:clickable="true" />
         </LinearLayout>
 
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Tags Pool:" />
+
         <GridView
             android:id="@+id/gvTag"
             android:layout_width="match_parent"
@@ -83,7 +89,7 @@
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:layout_marginBottom="10dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="0dp"
 
             android:background="@android:drawable/screen_background_dark_transparent"
             android:columnWidth="90dp"
@@ -94,77 +100,85 @@
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="96dp"
             android:weightSum="1"
-            android:layout_marginBottom="-10dip">
+            android:layout_marginBottom="-10dip"
+            android:layout_weight="0.41">
 
 
             <ImageButton
-                android:id="@+id/tagButton"
-                android:layout_width="60dp"
+                android:id="@+id/settingsButton"
+                android:layout_width="58dp"
                 android:layout_height="48dp"
-                android:onClick="toGallery"
-                android:scaleType="centerCrop"
-                android:visibility="visible"
-                app:srcCompat="@drawable/gallery2" />
+                android:onClick="deleteTags"
+                android:scaleType="fitCenter"
+                android:visibility="gone"
+                app:srcCompat="@drawable/settings" />
 
             <LinearLayout
-                android:orientation="vertical"
                 android:layout_width="163dp"
                 android:layout_height="match_parent"
-                android:weightSum="1"
-                android:layout_weight="1.05">
-
-                <ImageButton
-                    android:layout_width="match_parent"
-                    android:layout_height="47dp"
-                    app:srcCompat="@drawable/camera"
-                    android:id="@+id/imageButton"
-                    android:scaleType="fitCenter"
-                    android:onClick="cam" />
-
-                <ImageButton
-                    android:layout_width="50dp"
-                    android:layout_height="wrap_content"
-                    app:srcCompat="@android:drawable/ic_menu_save"
-                    android:id="@+id/saveButton"
-                    android:scaleType="fitCenter"
-                    android:foregroundGravity="center_vertical|center_horizontal"
-                    android:layout_gravity="center"
-                    android:visibility="invisible"
-                    android:onClick="saved" />
+                android:layout_weight="0.62"
+                android:orientation="vertical"
+                android:weightSum="1">
 
                 <EditText
                     android:id="@+id/addtagbox"
-                    android:layout_width="171dp"
+                    android:layout_width="127dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:background="@android:drawable/title_bar"
+                    android:elevation="3dp"
                     android:ems="10"
+                    android:gravity="center"
+                    android:hint="Quick Add..."
                     android:inputType="textPersonName"
                     android:shadowColor="@android:color/black"
                     android:textColor="@android:color/holo_orange_light" />
 
                 <Button
-                    android:text="Add Tag"
-                    android:layout_width="100dip"
-                    android:layout_height="wrap_content"
                     android:id="@+id/addtagbutton"
-                    android:layout_marginTop="5dip"
+                    android:layout_width="98dp"
+                    android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:textColor="@color/colorAccent"
-                    android:onClick="tagInsert" />
+                    android:layout_marginTop="5dip"
+                    android:onClick="tagInsert"
+                    android:text="Add Tag"
+                    android:textColor="@color/colorAccent" />
+
             </LinearLayout>
 
             <ImageButton
-                android:layout_width="58dp"
-                android:layout_height="48dp"
-                app:srcCompat="@drawable/settings"
-                android:id="@+id/settingsButton"
+                android:id="@+id/imageButton"
+                android:layout_width="116dp"
+                android:layout_height="66dp"
+                android:onClick="cam"
                 android:scaleType="fitCenter"
-                android:onClick="deleteTags" />
+                app:srcCompat="@drawable/camera" />
+
+            <ImageButton
+                android:id="@+id/tagButton"
+                android:layout_width="70dp"
+                android:layout_height="66dp"
+                android:layout_marginRight="10dp"
+                android:adjustViewBounds="false"
+                android:onClick="toGallery"
+                android:scaleType="fitCenter"
+                android:visibility="visible"
+                app:srcCompat="@drawable/gallery2" />
 
         </LinearLayout>
+
+        <ImageButton
+            android:id="@+id/saveButton"
+            android:layout_width="180dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:foregroundGravity="center_vertical|center_horizontal"
+            android:onClick="saved"
+            android:scaleType="fitCenter"
+            android:visibility="invisible"
+            app:srcCompat="@android:drawable/ic_menu_save" />
 
     </LinearLayout>
 

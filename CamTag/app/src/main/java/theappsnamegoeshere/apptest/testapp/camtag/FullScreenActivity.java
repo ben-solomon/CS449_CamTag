@@ -21,6 +21,7 @@ import java.util.ArrayList;
 
 public class FullScreenActivity extends Activity {
     ArrayList<String> currentGallery;
+
     String cursorfname;
     int index;
     @Override
@@ -29,6 +30,13 @@ public class FullScreenActivity extends Activity {
         setContentView(R.layout.activity_full_screen);
         final ImageView iv = (ImageView) findViewById(R.id.imageView2);
         ImageButton shareb = (ImageButton) findViewById(R.id.shareButton);
+        ImageButton editb = (ImageButton) findViewById(R.id.imageButton2);
+        editb.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(getApplicationContext(),"Edit Tags under construction!",Toast.LENGTH_SHORT).show();
+            }
+        });
         shareb.setVisibility(View.GONE);
         shareb.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -54,29 +62,36 @@ iv.setOnTouchListener(new OnTouchListener() {
         final ImageButton bb = (ImageButton) findViewById(R.id.backButton);
         final ImageButton nb = (ImageButton) findViewById(R.id.nextButton);
         final ImageButton sb = (ImageButton) findViewById(R.id.shareButton);
+        final ImageButton eb = (ImageButton) findViewById(R.id.imageButton2); //edit button
+        eb.setImageResource(R.drawable.edit);
         bb.setImageResource(R.drawable.back);
         nb.setImageResource(R.drawable.back);
         sb.setImageResource(R.drawable.share);
+        eb.setVisibility(View.VISIBLE);
         sb.setVisibility(View.VISIBLE);
         bb.setVisibility(View.VISIBLE);
         nb.setVisibility(View.VISIBLE);
-
+        eb.postDelayed(new Runnable() {
+            public void run() {
+                bb.setVisibility(View.GONE);
+            }
+        }, 5000);
         bb.postDelayed(new Runnable() {
             public void run() {
                 bb.setVisibility(View.GONE);
             }
-        }, 3500);
+        }, 5000);
         sb.postDelayed(new Runnable() {
             public void run() {
                 sb.setVisibility(View.GONE);
             }
-        }, 3500);
+        }, 5000);
 
         nb.postDelayed(new Runnable() {
             public void run() {
                 nb.setVisibility(View.GONE);
             }
-        }, 3500);
+        }, 5000);
 return false;}
 
 });
