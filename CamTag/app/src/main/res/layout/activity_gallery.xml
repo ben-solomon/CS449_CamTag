@@ -20,33 +20,33 @@
         android:gravity="top|left"
         android:hint="search tags..."
         android:inputType="textPersonName"
-        android:textAppearance="@style/TextAppearance.AppCompat.Light.SearchResult.Subtitle" />
+        android:textAppearance="@style/TextAppearance.AppCompat.Light.Widget.PopupMenu.Small"
+        android:visibility="gone" />
 
     <GridView
         android:id="@+id/galleryGrid"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_above="@+id/horizontalScrollView"
-        android:layout_below="@+id/galleryTagsGrid"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:animateLayoutChanges="true"
         android:background="@android:drawable/screen_background_dark_transparent"
         android:clipToPadding="true"
         android:columnWidth="90dp"
         android:gravity="center"
-        android:horizontalSpacing="10dp"
+        android:horizontalSpacing="5dp"
         android:listSelector="@drawable/bgv"
         android:numColumns="auto_fit"
         android:stretchMode="columnWidth"
         android:verticalSpacing="3dp"
         android:visibility="visible"
-        tools:layout_editor_absoluteX="8dp"
-        tools:layout_editor_absoluteY="140dp" />
+
+        android:layout_below="@+id/galleryTagsGrid" />
 
     <GridView
         android:id="@+id/galleryTagsGrid"
         android:layout_width="wrap_content"
-        android:layout_height="80dp"
+        android:layout_height="120dp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_below="@+id/filterSearch"
@@ -61,7 +61,7 @@
         android:paddingBottom="10dp"
         android:stretchMode="columnWidth"
         android:verticalSpacing="2dp"
-        android:visibility="visible"
+        android:visibility="gone"
         tools:layout_editor_absoluteX="10dp"
         tools:layout_editor_absoluteY="46dp" />
 
@@ -78,10 +78,25 @@
         app:elevation="5dp"
         app:fabSize="mini"
         app:rippleColor="@color/colorPrimary"
-        app:srcCompat="@android:drawable/arrow_up_float" />
+        app:srcCompat="@android:drawable/ic_menu_search" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/settingsButton"
+        android:layout_width="344dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_gravity="right"
+        android:alpha="0.45"
+        android:clickable="true"
+        android:foregroundGravity="right"
+        app:elevation="5dp"
+        app:fabSize="mini"
+        app:srcCompat="@drawable/settings2" />
 
     <HorizontalScrollView
-        android:id="@+id/horizontalScrollView"
+        android:id="@+id/bottomShareBar"
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:layout_alignParentBottom="true"
@@ -97,23 +112,16 @@
             android:orientation="horizontal">
 
             <android.support.design.widget.FloatingActionButton
-                android:id="@+id/floatingActionButton2"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:clickable="true"
-                app:fabSize="mini"
-                app:srcCompat="@android:drawable/stat_notify_chat" />
-
-            <android.support.design.widget.FloatingActionButton
-                android:id="@+id/floatingActionButton"
-                android:layout_width="match_parent"
+                android:id="@+id/shareMultiButton"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignEnd="@+id/filterSearch"
-                android:layout_alignParentBottom="true"
-                android:layout_alignRight="@+id/filterSearch"
+                android:alpha="0.6"
                 android:clickable="true"
+                android:visibility="visible"
+                app:elevation="5dp"
                 app:fabSize="mini"
-                app:srcCompat="@android:drawable/sym_action_email" />
+                app:srcCompat="@drawable/share2" />
+
         </LinearLayout>
     </HorizontalScrollView>
 

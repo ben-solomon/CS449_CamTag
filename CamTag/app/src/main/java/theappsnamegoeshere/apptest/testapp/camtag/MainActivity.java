@@ -270,13 +270,13 @@ public class MainActivity extends AppCompatActivity {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             switch (which) {
-                                case DialogInterface.BUTTON_POSITIVE: // yes clicked
+                                case DialogInterface.BUTTON_POSITIVE: // Gallery
+                                    toGallery();
                                     finish();
                                     break;
 
-                                case DialogInterface.BUTTON_NEGATIVE: // no clicked - closes dialog
+                                case DialogInterface.BUTTON_NEGATIVE: // Exit app
                                     //No button clicked
-                                    toGallery();
                                     finish();
                                     break;
                             }
@@ -284,7 +284,8 @@ public class MainActivity extends AppCompatActivity {
                     };
                     // actually show alert dialog (defined above)
                     AlertDialog.Builder builder2 = new AlertDialog.Builder(MainActivity.this);
-                    builder2.setMessage("Exit App? (No for Gallery)").setPositiveButton("Yes", dialogClickListener).setNegativeButton("No", dialogClickListener).show();
+                    builder2.setCancelable(false);
+                    builder2.setMessage("").setPositiveButton("Gallery", dialogClickListener).setNegativeButton("Exit", dialogClickListener).show();
 
                 }
                 break;
@@ -322,6 +323,7 @@ public class MainActivity extends AppCompatActivity {
 
         ListView list = (ListView) findViewById(R.id.selectedList);
         list.setVisibility(View.INVISIBLE);
+        toGallery();
 
     }
 
