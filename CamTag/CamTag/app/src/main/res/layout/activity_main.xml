@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="theappsnamegoeshere.apptest.testapp.camtag.MainActivity"
+    android:background="@color/colorPrimary"
+   >
+
+
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:scaleType="fitXY"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true">
+
+    </FrameLayout>
+
+    <TextView
+        android:text=" Assigned Tags:"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/frameLayout"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="10dp"
+        android:id="@+id/selectedLabel" />
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:weightSum="1"
+        android:layout_below="@+id/frameLayout5"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="191dp">
+
+            <ListView
+                android:layout_width="124dp"
+                android:listSelector="@drawable/bgv"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="20dp"
+                android:layout_marginRight="4dp"
+                android:layout_marginTop="17dp"
+                android:id="@+id/selectedList"
+                android:background="@android:drawable/screen_background_dark_transparent" />
+
+
+            <ImageView
+                android:id="@+id/picMain"
+                android:layout_width="match_parent"
+                android:layout_height="168dp"
+
+                android:cropToPadding="false"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:scaleType="fitCenter"
+                android:adjustViewBounds="true"
+                android:soundEffectsEnabled="false"
+                android:elevation="0dp"
+                app:srcCompat="@drawable/preview1"
+                android:layout_weight="1"
+                android:rotation="270"
+                android:clickable="true" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Tags Pool:" />
+
+        <GridView
+            android:id="@+id/gvTag"
+            android:layout_width="match_parent"
+            android:layout_height="149dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="0dp"
+
+            android:background="@android:drawable/screen_background_dark_transparent"
+            android:columnWidth="90dp"
+            android:numColumns="auto_fit"
+            android:scrollingCache="true"
+            android:verticalScrollbarPosition="right" />
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="96dp"
+            android:weightSum="1"
+            android:layout_marginBottom="-10dip"
+            android:layout_weight="0.41">
+
+
+            <ImageButton
+                android:id="@+id/settingsButton"
+                android:layout_width="58dp"
+                android:layout_height="48dp"
+                android:onClick="deleteTags"
+                android:scaleType="fitCenter"
+                android:visibility="gone"
+                app:srcCompat="@drawable/settings" />
+
+            <LinearLayout
+                android:layout_width="163dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.62"
+                android:orientation="vertical"
+                android:weightSum="1">
+
+                <EditText
+                    android:id="@+id/addtagbox"
+                    android:layout_width="127dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:background="@android:drawable/title_bar"
+                    android:elevation="3dp"
+                    android:ems="10"
+                    android:gravity="center"
+                    android:hint="Quick Add..."
+                    android:inputType="textPersonName"
+                    android:shadowColor="@android:color/black"
+                    android:textColor="@android:color/holo_orange_light" />
+
+                <Button
+                    android:id="@+id/addtagbutton"
+                    android:layout_width="98dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="5dip"
+                    android:onClick="tagInsert"
+                    android:text="Add Tag"
+                    android:textColor="@color/colorAccent" />
+
+            </LinearLayout>
+
+            <ImageButton
+                android:id="@+id/imageButton"
+                android:layout_width="116dp"
+                android:layout_height="66dp"
+                android:onClick="cam"
+                android:scaleType="fitCenter"
+                app:srcCompat="@drawable/camera" />
+
+            <ImageButton
+                android:id="@+id/tagButton"
+                android:layout_width="70dp"
+                android:layout_height="66dp"
+                android:layout_marginRight="10dp"
+                android:adjustViewBounds="false"
+                android:onClick="toGallery"
+                android:scaleType="fitCenter"
+                android:visibility="visible"
+                app:srcCompat="@drawable/gallery2" />
+
+        </LinearLayout>
+
+        <ImageButton
+            android:id="@+id/saveButton"
+            android:layout_width="180dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:foregroundGravity="center_vertical|center_horizontal"
+            android:onClick="saved"
+            android:scaleType="fitCenter"
+            android:visibility="invisible"
+            app:srcCompat="@android:drawable/ic_menu_save" />
+
+    </LinearLayout>
+
+
+</RelativeLayout>

@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimary"
+    tools:context="theappsnamegoeshere.apptest.testapp.camtag.GalleryActivity"
+    tools:layout_editor_absoluteX="0dp"
+    tools:layout_editor_absoluteY="0dp">
+
+
+    <GridView
+        android:id="@+id/galleryGrid"
+        android:layout_width="fill_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/galleryTagsGrid"
+        android:layout_alignParentBottom="true"
+        android:layout_below="@+id/galleryTagsGrid"
+        android:layout_centerHorizontal="true"
+        android:animateLayoutChanges="true"
+        android:background="@android:drawable/screen_background_dark_transparent"
+        android:clipToPadding="false"
+        android:columnWidth="90dp"
+        android:horizontalSpacing="5dp"
+        android:listSelector="@drawable/bgv"
+        android:numColumns="auto_fit"
+        android:stretchMode="columnWidth"
+        android:verticalSpacing="3dp"
+        android:visibility="visible" />
+
+    <GridView
+        android:id="@+id/galleryTagsGrid"
+        android:layout_width="wrap_content"
+        android:layout_height="120dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/filterSearch"
+        android:clickable="true"
+        android:columnWidth="90dp"
+        android:hapticFeedbackEnabled="true"
+        android:horizontalSpacing="2dp"
+        android:listSelector="@drawable/bgv"
+        android:numColumns="auto_fit"
+        android:padding="2dp"
+        android:paddingBottom="5dp"
+        android:stretchMode="columnWidth"
+        android:verticalSpacing="2dp"
+        android:visibility="gone"
+        tools:layout_editor_absoluteX="10dp"
+        tools:layout_editor_absoluteY="46dp" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/searchButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:alpha="0.6"
+        android:clickable="true"
+        android:foregroundGravity="top|right"
+        android:onClick="showSearch"
+        app:elevation="5dp"
+        app:fabSize="mini"
+        app:rippleColor="@color/colorPrimary"
+        app:srcCompat="@android:drawable/ic_menu_search" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/settingsButton"
+        android:layout_width="344dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_gravity="right"
+        android:alpha="0.45"
+        android:clickable="true"
+        android:foregroundGravity="right"
+        app:elevation="5dp"
+        app:fabSize="mini"
+        app:srcCompat="@drawable/settings2" />
+
+    <HorizontalScrollView
+        android:id="@+id/bottomShareBar"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:foregroundGravity="bottom"
+        android:visibility="gone"
+        >
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="bottom"
+            android:orientation="horizontal">
+
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/shareMultiButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:alpha="0.6"
+                android:clickable="true"
+                android:layout_marginRight="5dp"
+                android:visibility="visible"
+                app:elevation="8dp"
+                app:fabSize="mini"
+                app:srcCompat="@drawable/share2" />
+
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/deleteButtonFloat"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:alpha="0.6"
+                android:clickable="true"
+
+                android:visibility="visible"
+                app:elevation="5dp"
+                app:fabSize="mini"
+                app:srcCompat="@drawable/delete2" />
+
+        </LinearLayout>
+    </HorizontalScrollView>
+
+</RelativeLayout>

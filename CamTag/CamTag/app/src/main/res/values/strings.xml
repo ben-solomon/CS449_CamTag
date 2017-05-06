@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">CamTag</string>
+    <string name="title_activity_tag">TagActivity</string>
+    <string name="title_activity_full_screen">FullScreenActivity</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="fullScreenFname">FullScreenFile</string>
+    <item name="tag1" type="id" />
+    <item name="tag2" type="id" />
+    <item name="tagx1" type="id" />
+    <item name="tagx2" type="id" />
+    <item name="gvitem" type="id" />
+    <item name="holdergv" type="id" />
+</resources>
